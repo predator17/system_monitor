@@ -10,10 +10,10 @@ import time
 class TestGPUProvider:
     """Test GPUProvider class."""
 
-    @patch('system_monitor.providers.gpu_provider.shutil.which')
+    @patch('application.providers.gpu_provider.shutil.which')
     def test_init_no_gpu(self, mock_which):
         """Test GPUProvider initialization with no GPU."""
-        from system_monitor.providers.gpu_provider import GPUProvider
+        from application.providers.gpu_provider import GPUProvider
         
         # Mock no pynvml and no nvidia-smi
         mock_which.return_value = None
@@ -24,10 +24,10 @@ class TestGPUProvider:
         assert provider.method == "none"
         assert provider.gpu_names() == []
 
-    @patch('system_monitor.providers.gpu_provider.shutil.which')
+    @patch('application.providers.gpu_provider.shutil.which')
     def test_init_nvml_success(self, mock_which):
         """Test GPUProvider initialization with NVML."""
-        from system_monitor.providers.gpu_provider import GPUProvider
+        from application.providers.gpu_provider import GPUProvider
         
         # Mock pynvml
         mock_nvml = MagicMock()
@@ -46,11 +46,11 @@ class TestGPUProvider:
         assert "GPU 0" in provider.gpu_names()
         assert "GPU 1" in provider.gpu_names()
 
-    @patch('system_monitor.providers.gpu_provider.subprocess.run')
-    @patch('system_monitor.providers.gpu_provider.shutil.which')
+    @patch('application.providers.gpu_provider.subprocess.run')
+    @patch('application.providers.gpu_provider.shutil.which')
     def test_init_nvidia_smi_fallback(self, mock_which, mock_subprocess):
         """Test GPUProvider falls back to nvidia-smi."""
-        from system_monitor.providers.gpu_provider import GPUProvider
+        from application.providers.gpu_provider import GPUProvider
         
         mock_which.return_value = "/usr/bin/nvidia-smi"
         mock_result = MagicMock()
@@ -65,10 +65,10 @@ class TestGPUProvider:
         assert provider.method == "nvidia-smi"
         assert len(provider.gpu_names()) == 2
 
-    @patch('system_monitor.providers.gpu_provider.shutil.which')
+    @patch('application.providers.gpu_provider.shutil.which')
     def test_init_nvml_exception(self, mock_which):
         """Test GPUProvider handles NVML initialization exception."""
-        from system_monitor.providers.gpu_provider import GPUProvider
+        from application.providers.gpu_provider import GPUProvider
         
         mock_which.return_value = None
         mock_nvml = MagicMock()
@@ -81,11 +81,11 @@ class TestGPUProvider:
         assert provider.method == "none"
         assert provider._nvml is None
 
-    @patch('system_monitor.providers.gpu_provider.subprocess.run')
-    @patch('system_monitor.providers.gpu_provider.shutil.which')
+    @patch('application.providers.gpu_provider.subprocess.run')
+    @patch('application.providers.gpu_provider.shutil.which')
     def test_query_nvidia_smi_names(self, mock_which, mock_subprocess):
         """Test _query_nvidia_smi_names."""
-        from system_monitor.providers.gpu_provider import GPUProvider
+        from application.providers.gpu_provider import GPUProvider
         
         mock_which.return_value = "/usr/bin/nvidia-smi"
         mock_result = MagicMock()
@@ -100,10 +100,10 @@ class TestGPUProvider:
         assert "NVIDIA GeForce RTX 3080" in provider.gpu_names()
         assert "NVIDIA GeForce RTX 3090" in provider.gpu_names()
 
-    @patch('system_monitor.providers.gpu_provider.subprocess.run')
+    @patch('application.providers.gpu_provider.subprocess.run')
     def test_query_nvidia_smi_utils(self, mock_subprocess):
         """Test _query_nvidia_smi_utils."""
-        from system_monitor.providers.gpu_provider import GPUProvider
+        from application.providers.gpu_provider import GPUProvider
         
         provider = GPUProvider()
         provider.method = "nvidia-smi"
@@ -116,10 +116,10 @@ class TestGPUProvider:
         
         assert utils == [45.0, 67.0]
 
-    @patch('system_monitor.providers.gpu_provider.subprocess.run')
+    @patch('application.providers.gpu_provider.subprocess.run')
     def test_query_nvidia_smi_utils_invalid(self, mock_subprocess):
         """Test _query_nvidia_smi_utils handles invalid data."""
-        from system_monitor.providers.gpu_provider import GPUProvider
+        from application.providers.gpu_provider import GPUProvider
         
         provider = GPUProvider()
         mock_result = MagicMock()
@@ -130,10 +130,10 @@ class TestGPUProvider:
         
         assert utils == [45.0, 0.0]
 
-    @patch('system_monitor.providers.gpu_provider.subprocess.run')
+    @patch('application.providers.gpu_provider.subprocess.run')
     def test_query_nvidia_smi_vram(self, mock_subprocess):
         """Test _query_nvidia_smi_vram."""
-        from system_monitor.providers.gpu_provider import GPUProvider
+        from application.providers.gpu_provider import GPUProvider
         
         provider = GPUProvider()
         mock_result = MagicMock()
@@ -144,10 +144,10 @@ class TestGPUProvider:
         
         assert vram == [(1024.0, 8192.0), (2048.0, 10240.0)]
 
-    @patch('system_monitor.providers.gpu_provider.subprocess.run')
+    @patch('application.providers.gpu_provider.subprocess.run')
     def test_query_nvidia_smi_vram_invalid(self, mock_subprocess):
         """Test _query_nvidia_smi_vram handles invalid data."""
-        from system_monitor.providers.gpu_provider import GPUProvider
+        from application.providers.gpu_provider import GPUProvider
         
         provider = GPUProvider()
         mock_result = MagicMock()
@@ -158,10 +158,10 @@ class TestGPUProvider:
         
         assert vram == [(1024.0, 8192.0), (0.0, 0.0)]
 
-    @patch('system_monitor.providers.gpu_provider.subprocess.run')
+    @patch('application.providers.gpu_provider.subprocess.run')
     def test_query_nvidia_smi_freq(self, mock_subprocess):
         """Test _query_nvidia_smi_freq."""
-        from system_monitor.providers.gpu_provider import GPUProvider
+        from application.providers.gpu_provider import GPUProvider
         
         provider = GPUProvider()
         mock_result = MagicMock()
@@ -172,10 +172,10 @@ class TestGPUProvider:
         
         assert freqs == [1500.0, 1600.0]
 
-    @patch('system_monitor.providers.gpu_provider.subprocess.run')
+    @patch('application.providers.gpu_provider.subprocess.run')
     def test_query_nvidia_smi_freq_invalid(self, mock_subprocess):
         """Test _query_nvidia_smi_freq handles invalid data."""
-        from system_monitor.providers.gpu_provider import GPUProvider
+        from application.providers.gpu_provider import GPUProvider
         
         provider = GPUProvider()
         mock_result = MagicMock()
@@ -188,7 +188,7 @@ class TestGPUProvider:
 
     def test_gpu_names_returns_copy(self):
         """Test gpu_names returns a copy of the list."""
-        from system_monitor.providers.gpu_provider import GPUProvider
+        from application.providers.gpu_provider import GPUProvider
         
         provider = GPUProvider()
         provider._gpu_names = ["GPU 0", "GPU 1"]
@@ -199,10 +199,10 @@ class TestGPUProvider:
         assert names1 == names2
         assert names1 is not names2  # Different objects
 
-    @patch('system_monitor.providers.gpu_provider.shutil.which')
+    @patch('application.providers.gpu_provider.shutil.which')
     def test_gpu_utils_nvml(self, mock_which):
         """Test gpu_utils with NVML method."""
-        from system_monitor.providers.gpu_provider import GPUProvider
+        from application.providers.gpu_provider import GPUProvider
         
         mock_nvml = MagicMock()
         mock_nvml.nvmlDeviceGetCount.return_value = 1
@@ -224,10 +224,10 @@ class TestGPUProvider:
         
         assert utils == [75.0]
 
-    @patch('system_monitor.providers.gpu_provider.shutil.which')
+    @patch('application.providers.gpu_provider.shutil.which')
     def test_gpu_utils_nvml_exception(self, mock_which):
         """Test gpu_utils handles NVML exception."""
-        from system_monitor.providers.gpu_provider import GPUProvider
+        from application.providers.gpu_provider import GPUProvider
         
         mock_nvml = MagicMock()
         mock_nvml.nvmlDeviceGetCount.return_value = 1
@@ -248,7 +248,7 @@ class TestGPUProvider:
 
     def test_gpu_utils_nvidia_smi(self):
         """Test gpu_utils with nvidia-smi method."""
-        from system_monitor.providers.gpu_provider import GPUProvider
+        from application.providers.gpu_provider import GPUProvider
         
         provider = GPUProvider()
         provider.method = "nvidia-smi"
@@ -260,7 +260,7 @@ class TestGPUProvider:
 
     def test_gpu_utils_no_method(self):
         """Test gpu_utils with no GPU method."""
-        from system_monitor.providers.gpu_provider import GPUProvider
+        from application.providers.gpu_provider import GPUProvider
         
         provider = GPUProvider()
         provider.method = "none"
@@ -269,10 +269,10 @@ class TestGPUProvider:
         
         assert utils == []
 
-    @patch('system_monitor.providers.gpu_provider.shutil.which')
+    @patch('application.providers.gpu_provider.shutil.which')
     def test_gpu_vram_info_nvml(self, mock_which):
         """Test gpu_vram_info with NVML method."""
-        from system_monitor.providers.gpu_provider import GPUProvider
+        from application.providers.gpu_provider import GPUProvider
         
         mock_nvml = MagicMock()
         mock_nvml.nvmlDeviceGetCount.return_value = 1
@@ -296,10 +296,10 @@ class TestGPUProvider:
         assert len(vram) == 1
         assert vram[0] == (2048.0, 8192.0)
 
-    @patch('system_monitor.providers.gpu_provider.shutil.which')
+    @patch('application.providers.gpu_provider.shutil.which')
     def test_gpu_vram_info_nvml_exception(self, mock_which):
         """Test gpu_vram_info handles NVML exception."""
-        from system_monitor.providers.gpu_provider import GPUProvider
+        from application.providers.gpu_provider import GPUProvider
         
         mock_nvml = MagicMock()
         mock_nvml.nvmlDeviceGetCount.return_value = 1
@@ -320,7 +320,7 @@ class TestGPUProvider:
 
     def test_gpu_vram_info_nvidia_smi(self):
         """Test gpu_vram_info with nvidia-smi method."""
-        from system_monitor.providers.gpu_provider import GPUProvider
+        from application.providers.gpu_provider import GPUProvider
         
         provider = GPUProvider()
         provider.method = "nvidia-smi"
@@ -332,7 +332,7 @@ class TestGPUProvider:
 
     def test_gpu_vram_info_no_method(self):
         """Test gpu_vram_info with no GPU method."""
-        from system_monitor.providers.gpu_provider import GPUProvider
+        from application.providers.gpu_provider import GPUProvider
         
         provider = GPUProvider()
         provider.method = "none"
@@ -341,10 +341,10 @@ class TestGPUProvider:
         
         assert vram == []
 
-    @patch('system_monitor.providers.gpu_provider.shutil.which')
+    @patch('application.providers.gpu_provider.shutil.which')
     def test_gpu_frequencies_nvml(self, mock_which):
         """Test gpu_frequencies with NVML method."""
-        from system_monitor.providers.gpu_provider import GPUProvider
+        from application.providers.gpu_provider import GPUProvider
         
         mock_nvml = MagicMock()
         mock_nvml.nvmlDeviceGetCount.return_value = 1
@@ -364,10 +364,10 @@ class TestGPUProvider:
         
         assert freqs == [1500.0]
 
-    @patch('system_monitor.providers.gpu_provider.shutil.which')
+    @patch('application.providers.gpu_provider.shutil.which')
     def test_gpu_frequencies_nvml_exception(self, mock_which):
         """Test gpu_frequencies handles NVML exception."""
-        from system_monitor.providers.gpu_provider import GPUProvider
+        from application.providers.gpu_provider import GPUProvider
         
         mock_nvml = MagicMock()
         mock_nvml.nvmlDeviceGetCount.return_value = 1
@@ -389,7 +389,7 @@ class TestGPUProvider:
 
     def test_gpu_frequencies_nvidia_smi(self):
         """Test gpu_frequencies with nvidia-smi method."""
-        from system_monitor.providers.gpu_provider import GPUProvider
+        from application.providers.gpu_provider import GPUProvider
         
         provider = GPUProvider()
         provider.method = "nvidia-smi"
@@ -401,7 +401,7 @@ class TestGPUProvider:
 
     def test_gpu_frequencies_no_method(self):
         """Test gpu_frequencies with no GPU method."""
-        from system_monitor.providers.gpu_provider import GPUProvider
+        from application.providers.gpu_provider import GPUProvider
         
         provider = GPUProvider()
         provider.method = "none"
@@ -410,13 +410,13 @@ class TestGPUProvider:
         
         assert freqs == []
 
-    @patch('system_monitor.providers.gpu_provider.threading.Thread')
-    @patch('system_monitor.providers.gpu_provider.time.sleep')
-    @patch('system_monitor.providers.gpu_provider.subprocess.run')
-    @patch('system_monitor.providers.gpu_provider.shutil.which')
+    @patch('application.providers.gpu_provider.threading.Thread')
+    @patch('application.providers.gpu_provider.time.sleep')
+    @patch('application.providers.gpu_provider.subprocess.run')
+    @patch('application.providers.gpu_provider.shutil.which')
     def test_smi_poll_loop(self, mock_which, mock_subprocess, mock_sleep, mock_thread):
         """Test _smi_poll_loop updates cached values."""
-        from system_monitor.providers.gpu_provider import GPUProvider
+        from application.providers.gpu_provider import GPUProvider
         
         mock_which.return_value = "/usr/bin/nvidia-smi"
         
@@ -461,13 +461,13 @@ class TestGPUProvider:
         assert provider._last_smi_vram == [(2048.0, 8192.0)]
         assert provider._last_smi_freq == [1500.0]
 
-    @patch('system_monitor.providers.gpu_provider.threading.Thread')
-    @patch('system_monitor.providers.gpu_provider.time.sleep')
-    @patch('system_monitor.providers.gpu_provider.subprocess.run')
-    @patch('system_monitor.providers.gpu_provider.shutil.which')
+    @patch('application.providers.gpu_provider.threading.Thread')
+    @patch('application.providers.gpu_provider.time.sleep')
+    @patch('application.providers.gpu_provider.subprocess.run')
+    @patch('application.providers.gpu_provider.shutil.which')
     def test_smi_poll_loop_exception(self, mock_which, mock_subprocess, mock_sleep, mock_thread):
         """Test _smi_poll_loop handles exceptions."""
-        from system_monitor.providers.gpu_provider import GPUProvider
+        from application.providers.gpu_provider import GPUProvider
         
         mock_which.return_value = "/usr/bin/nvidia-smi"
         mock_result = MagicMock()

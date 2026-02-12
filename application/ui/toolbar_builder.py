@@ -7,9 +7,9 @@ from typing import TYPE_CHECKING
 from PySide6.QtWidgets import QLabel, QSpinBox, QPushButton, QToolBar
 
 if TYPE_CHECKING:
-    from system_monitor.app import SystemMonitor
+    from application.app import SystemMonitor
 
-from system_monitor.ui.event_handlers import EventHandlers
+from application.ui.event_handlers import EventHandlers
 
 
 class ToolbarBuilder:

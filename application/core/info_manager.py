@@ -11,10 +11,10 @@ try:
 except ImportError:
     psutil = None
 
-from system_monitor.utils import get_cpu_model_name
+from application.utils import get_cpu_model_name
 
 if TYPE_CHECKING:
-    from system_monitor.app import SystemMonitor
+    from application.app import SystemMonitor
 
 
 class InfoManager:

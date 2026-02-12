@@ -6,11 +6,11 @@ from typing import TYPE_CHECKING
 
 from PySide6.QtWidgets import QWidget, QGridLayout
 
-from system_monitor.widgets import MetricCard
-from system_monitor.utils import get_cpu_model_name
+from application.widgets import MetricCard
+from application.utils import get_cpu_model_name
 
 if TYPE_CHECKING:
-    from system_monitor.app import SystemMonitor
+    from application.app import SystemMonitor
 
 
 class DashboardBuilder:

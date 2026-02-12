@@ -6,10 +6,10 @@ from typing import TYPE_CHECKING
 
 from PySide6.QtWidgets import QTreeWidgetItem
 
-from system_monitor.core.process_manager import ProcessManager
+from application.core.process_manager import ProcessManager
 
 if TYPE_CHECKING:
-    from system_monitor.app import SystemMonitor
+    from application.app import SystemMonitor
 
 
 class EventHandlers:

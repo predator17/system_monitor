@@ -6,10 +6,10 @@ from typing import TYPE_CHECKING
 
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QComboBox
 
-from system_monitor.utils import get_memory_frequency
+from application.utils import get_memory_frequency
 
 if TYPE_CHECKING:
-    from system_monitor.app import SystemMonitor
+    from application.app import SystemMonitor
 
 
 class BasicTabsBuilder:

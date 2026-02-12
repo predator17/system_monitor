@@ -11,7 +11,7 @@ class TestTheme:
 
     def test_apply_dark_theme(self, qapp):
         """Test apply_dark_theme sets style, palette, and stylesheet."""
-        from system_monitor.utils.theme import apply_dark_theme
+        from application.utils.theme import apply_dark_theme
         from PySide6.QtGui import QPalette, QColor
         
         # Apply theme
@@ -97,7 +97,7 @@ class TestTheme:
 
     def test_apply_dark_theme_called_multiple_times(self, qapp):
         """Test apply_dark_theme can be called multiple times without errors."""
-        from system_monitor.utils.theme import apply_dark_theme
+        from application.utils.theme import apply_dark_theme
         
         # Should not raise any exceptions
         apply_dark_theme(qapp)

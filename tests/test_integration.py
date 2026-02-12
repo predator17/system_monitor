@@ -1,4 +1,4 @@
-"""Integration tests for system_monitor application."""
+"""Integration tests for application application."""
 
 #      Copyright (c) 2025 predator. All rights reserved.
 
@@ -42,12 +42,12 @@ class TestSystemMonitorIntegration(unittest.TestCase):
         
         return mock_gpu_instance
 
-    @patch('system_monitor.app.apply_dark_theme')
-    @patch('system_monitor.app.GPUProvider')
-    @patch('system_monitor.app.psutil')
+    @patch('application.app.apply_dark_theme')
+    @patch('application.app.GPUProvider')
+    @patch('application.app.psutil')
     def test_system_monitor_initialization(self, mock_psutil, mock_gpu, mock_theme):
         """Test SystemMonitor initialization creates all components."""
-        from system_monitor.app import SystemMonitor
+        from application.app import SystemMonitor
         
         self._setup_mocks(mock_psutil, mock_gpu)
         
@@ -57,12 +57,12 @@ class TestSystemMonitorIntegration(unittest.TestCase):
         self.assertIsNotNone(monitor.gpu_provider)
         self.assertFalse(monitor._paused)
 
-    @patch('system_monitor.app.apply_dark_theme')
-    @patch('system_monitor.app.GPUProvider')
-    @patch('system_monitor.app.psutil')
+    @patch('application.app.apply_dark_theme')
+    @patch('application.app.GPUProvider')
+    @patch('application.app.psutil')
     def test_system_monitor_timer_setup(self, mock_psutil, mock_gpu, mock_theme):
         """Test SystemMonitor timer is properly configured."""
-        from system_monitor.app import SystemMonitor
+        from application.app import SystemMonitor
         
         self._setup_mocks(mock_psutil, mock_gpu)
         
@@ -72,13 +72,13 @@ class TestSystemMonitorIntegration(unittest.TestCase):
         # Timer should be started with correct interval
         self.assertTrue(hasattr(monitor, 'timer'))
 
-    @patch('system_monitor.app.apply_dark_theme')
-    @patch('system_monitor.app.GPUProvider')
-    @patch('system_monitor.app.psutil')
-    @patch('system_monitor.app.MetricsUpdater.update_all_metrics')
+    @patch('application.app.apply_dark_theme')
+    @patch('application.app.GPUProvider')
+    @patch('application.app.psutil')
+    @patch('application.app.MetricsUpdater.update_all_metrics')
     def test_system_monitor_on_timer_not_paused(self, mock_update, mock_psutil, mock_gpu, mock_theme):
         """Test on_timer updates metrics when not paused."""
-        from system_monitor.app import SystemMonitor
+        from application.app import SystemMonitor
         
         self._setup_mocks(mock_psutil, mock_gpu)
         
@@ -89,13 +89,13 @@ class TestSystemMonitorIntegration(unittest.TestCase):
         
         mock_update.assert_called_once()
 
-    @patch('system_monitor.app.apply_dark_theme')
-    @patch('system_monitor.app.GPUProvider')
-    @patch('system_monitor.app.psutil')
-    @patch('system_monitor.app.MetricsUpdater.update_all_metrics')
+    @patch('application.app.apply_dark_theme')
+    @patch('application.app.GPUProvider')
+    @patch('application.app.psutil')
+    @patch('application.app.MetricsUpdater.update_all_metrics')
     def test_system_monitor_on_timer_paused(self, mock_update, mock_psutil, mock_gpu, mock_theme):
         """Test on_timer skips updates when paused."""
-        from system_monitor.app import SystemMonitor
+        from application.app import SystemMonitor
         
         self._setup_mocks(mock_psutil, mock_gpu)
         
@@ -106,13 +106,13 @@ class TestSystemMonitorIntegration(unittest.TestCase):
         
         mock_update.assert_not_called()
 
-    @patch('system_monitor.app.apply_dark_theme')
-    @patch('system_monitor.app.GPUProvider')
-    @patch('system_monitor.app.psutil')
-    @patch('system_monitor.app.ProcessManager.shutdown_collector')
+    @patch('application.app.apply_dark_theme')
+    @patch('application.app.GPUProvider')
+    @patch('application.app.psutil')
+    @patch('application.app.ProcessManager.shutdown_collector')
     def test_system_monitor_close_event_cleanup(self, mock_shutdown, mock_psutil, mock_gpu, mock_theme):
         """Test closeEvent properly cleans up resources."""
-        from system_monitor.app import SystemMonitor
+        from application.app import SystemMonitor
         from PySide6.QtGui import QCloseEvent
         from PySide6.QtCore import QEvent
         
@@ -130,13 +130,13 @@ class TestSystemMonitorIntegration(unittest.TestCase):
 class TestMainFunction(unittest.TestCase):
     """Test main application entry point."""
 
-    @patch('system_monitor.app.sys.exit')
-    @patch('system_monitor.app.SystemMonitor')
-    @patch('system_monitor.app.apply_dark_theme')
-    @patch('system_monitor.app.QApplication')
+    @patch('application.app.sys.exit')
+    @patch('application.app.SystemMonitor')
+    @patch('application.app.apply_dark_theme')
+    @patch('application.app.QApplication')
     def test_main_creates_application(self, mock_qapp, mock_theme, mock_monitor, mock_exit):
         """Test main() creates QApplication and SystemMonitor."""
-        from system_monitor.app import main
+        from application.app import main
         
         mock_app_instance = MagicMock()
         mock_qapp.return_value = mock_app_instance

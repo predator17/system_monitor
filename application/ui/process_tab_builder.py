@@ -10,7 +10,7 @@ from PySide6.QtWidgets import (
 )
 
 if TYPE_CHECKING:
-    from system_monitor.app import SystemMonitor
+    from application.app import SystemMonitor
 
 
 class ProcessTabBuilder:

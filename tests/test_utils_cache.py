@@ -13,12 +13,12 @@ class TestSystemInfoCache:
 
     def setup_method(self):
         """Reset cache before each test."""
-        from system_monitor.utils.cache import SystemInfoCache
+        from application.utils.cache import SystemInfoCache
         SystemInfoCache.reset()
 
     def test_singleton_pattern(self):
         """Test that SystemInfoCache implements singleton pattern."""
-        from system_monitor.utils.cache import SystemInfoCache
+        from application.utils.cache import SystemInfoCache
         
         cache1 = SystemInfoCache()
         cache2 = SystemInfoCache()
@@ -27,7 +27,7 @@ class TestSystemInfoCache:
 
     def test_get_nonexistent_key(self):
         """Test get returns None for nonexistent key."""
-        from system_monitor.utils.cache import SystemInfoCache
+        from application.utils.cache import SystemInfoCache
         
         cache = SystemInfoCache()
         result = cache.get('nonexistent')
@@ -36,7 +36,7 @@ class TestSystemInfoCache:
 
     def test_set_and_get(self):
         """Test set and get operations."""
-        from system_monitor.utils.cache import SystemInfoCache
+        from application.utils.cache import SystemInfoCache
         
         cache = SystemInfoCache()
         cache.set('test_key', 'test_value')
@@ -46,7 +46,7 @@ class TestSystemInfoCache:
 
     def test_get_or_compute_not_cached(self):
         """Test get_or_compute computes value when not cached."""
-        from system_monitor.utils.cache import SystemInfoCache
+        from application.utils.cache import SystemInfoCache
         
         cache = SystemInfoCache()
         compute_func = Mock(return_value='computed_value')
@@ -61,7 +61,7 @@ class TestSystemInfoCache:
 
     def test_get_or_compute_cached(self):
         """Test get_or_compute returns cached value without computing."""
-        from system_monitor.utils.cache import SystemInfoCache
+        from application.utils.cache import SystemInfoCache
         
         cache = SystemInfoCache()
         cache.set('existing_key', 'cached_value')
@@ -74,7 +74,7 @@ class TestSystemInfoCache:
 
     def test_clear(self):
         """Test clear removes all cached values."""
-        from system_monitor.utils.cache import SystemInfoCache
+        from application.utils.cache import SystemInfoCache
         
         cache = SystemInfoCache()
         cache.set('key1', 'value1')
@@ -87,7 +87,7 @@ class TestSystemInfoCache:
 
     def test_reset_class_method(self):
         """Test reset class method resets singleton instance."""
-        from system_monitor.utils.cache import SystemInfoCache
+        from application.utils.cache import SystemInfoCache
         
         cache1 = SystemInfoCache()
         cache1.set('test', 'value')
@@ -100,7 +100,7 @@ class TestSystemInfoCache:
 
     def test_thread_safety(self):
         """Test that cache operations are thread-safe."""
-        from system_monitor.utils.cache import SystemInfoCache
+        from application.utils.cache import SystemInfoCache
         
         cache = SystemInfoCache()
         results = []
@@ -128,7 +128,7 @@ class TestSystemInfoCache:
 
     def test_get_or_compute_thread_safety(self):
         """Test get_or_compute is thread-safe."""
-        from system_monitor.utils.cache import SystemInfoCache
+        from application.utils.cache import SystemInfoCache
         
         cache = SystemInfoCache()
         call_count = []
@@ -162,12 +162,12 @@ class TestCachedStaticPropertyDecorator:
 
     def setup_method(self):
         """Reset cache before each test."""
-        from system_monitor.utils.cache import SystemInfoCache
+        from application.utils.cache import SystemInfoCache
         SystemInfoCache.reset()
 
     def test_decorator_caches_result(self):
         """Test decorator caches function result."""
-        from system_monitor.utils.cache import cached_static_property
+        from application.utils.cache import cached_static_property
         
         call_count = []
         
@@ -188,7 +188,7 @@ class TestCachedStaticPropertyDecorator:
 
     def test_decorator_with_different_keys(self):
         """Test decorator with different cache keys."""
-        from system_monitor.utils.cache import cached_static_property
+        from application.utils.cache import cached_static_property
         
         @cached_static_property('key1')
         def func1():
@@ -206,7 +206,7 @@ class TestCachedStaticPropertyDecorator:
 
     def test_decorator_with_args(self):
         """Test decorator works with function arguments."""
-        from system_monitor.utils.cache import cached_static_property
+        from application.utils.cache import cached_static_property
         
         call_count = []
         

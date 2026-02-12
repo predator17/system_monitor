@@ -6,11 +6,11 @@ from typing import TYPE_CHECKING, Optional
 
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel
 
-from system_monitor.widgets import TimeSeriesChart
-from system_monitor.utils import get_gpu_temperatures
+from application.widgets import TimeSeriesChart
+from application.utils import get_gpu_temperatures
 
 if TYPE_CHECKING:
-    from system_monitor.app import SystemMonitor
+    from application.app import SystemMonitor
 
 
 class GPUTabBuilder:

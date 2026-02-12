@@ -4,7 +4,7 @@
 
 from typing import Optional
 
-from system_monitor.widgets import TimeSeriesChart
+from application.widgets import TimeSeriesChart
 
 
 class ChartFactory:

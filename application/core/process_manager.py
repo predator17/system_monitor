@@ -14,7 +14,7 @@ from PySide6.QtWidgets import QTreeWidgetItem
 from .process_collector import ProcessCollector
 
 if TYPE_CHECKING:
-    from system_monitor.app import SystemMonitor
+    from application.app import SystemMonitor
 
 
 class ProcessManager:

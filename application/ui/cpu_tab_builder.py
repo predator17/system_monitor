@@ -17,10 +17,10 @@ from PySide6.QtWidgets import (
     QLabel, QScrollArea, QFrame
 )
 
-from system_monitor.widgets import TimeSeriesChart
+from application.widgets import TimeSeriesChart
 
 if TYPE_CHECKING:
-    from system_monitor.app import SystemMonitor
+    from application.app import SystemMonitor
 
 
 class CPUTabBuilder:

@@ -16,12 +16,12 @@ from PySide6.QtCore import QTimer, QElapsedTimer
 from PySide6.QtGui import QKeySequence, QAction
 from PySide6.QtWidgets import QApplication, QMainWindow, QTabWidget, QTreeWidgetItem
 
-from system_monitor.providers import GPUProvider
-from system_monitor.utils import apply_dark_theme
-from system_monitor.core.metrics_updater import MetricsUpdater
-from system_monitor.core.process_manager import ProcessManager
-from system_monitor.core.info_manager import InfoManager
-from system_monitor.ui import (
+from application.providers import GPUProvider
+from application.utils import apply_dark_theme
+from application.core.metrics_updater import MetricsUpdater
+from application.core.process_manager import ProcessManager
+from application.core.info_manager import InfoManager
+from application.ui import (
     ToolbarBuilder, DashboardBuilder, ChartFactory,
     CPUTabBuilder, BasicTabsBuilder, GPUTabBuilder, ProcessTabBuilder, EventHandlers
 )

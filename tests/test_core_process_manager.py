@@ -13,7 +13,7 @@ class TestProcessManager:
     def setup_method(self):
         """Setup mock monitor for each test."""
         # Reset class-level collector before each test
-        from system_monitor.core.process_manager import ProcessManager
+        from application.core.process_manager import ProcessManager
         ProcessManager._collector = None
         
         self.monitor = MagicMock()
@@ -24,9 +24,9 @@ class TestProcessManager:
 
     def test_initialize_collector_creates_collector(self):
         """Test initialize_collector creates ProcessCollector."""
-        from system_monitor.core.process_manager import ProcessManager
+        from application.core.process_manager import ProcessManager
         
-        with patch('system_monitor.core.process_manager.ProcessCollector') as mock_collector_cls:
+        with patch('application.core.process_manager.ProcessCollector') as mock_collector_cls:
             mock_collector = MagicMock()
             mock_collector_cls.return_value = mock_collector
             
@@ -37,9 +37,9 @@ class TestProcessManager:
 
     def test_initialize_collector_only_once(self):
         """Test initialize_collector only creates collector once."""
-        from system_monitor.core.process_manager import ProcessManager
+        from application.core.process_manager import ProcessManager
         
-        with patch('system_monitor.core.process_manager.ProcessCollector') as mock_collector_cls:
+        with patch('application.core.process_manager.ProcessCollector') as mock_collector_cls:
             mock_collector = MagicMock()
             mock_collector_cls.return_value = mock_collector
             
@@ -51,7 +51,7 @@ class TestProcessManager:
 
     def test_shutdown_collector_shuts_down(self):
         """Test shutdown_collector properly shuts down collector."""
-        from system_monitor.core.process_manager import ProcessManager
+        from application.core.process_manager import ProcessManager
         
         mock_collector = MagicMock()
         ProcessManager._collector = mock_collector
@@ -63,7 +63,7 @@ class TestProcessManager:
 
     def test_shutdown_collector_when_none(self):
         """Test shutdown_collector handles None collector."""
-        from system_monitor.core.process_manager import ProcessManager
+        from application.core.process_manager import ProcessManager
         
         ProcessManager._collector = None
         
@@ -72,10 +72,10 @@ class TestProcessManager:
         
         assert ProcessManager._collector is None
 
-    @patch('system_monitor.core.process_manager.psutil')
+    @patch('application.core.process_manager.psutil')
     def test_on_proc_item_expanded_loads_threads(self, mock_psutil):
         """Test on_proc_item_expanded loads threads for process."""
-        from system_monitor.core.process_manager import ProcessManager
+        from application.core.process_manager import ProcessManager
         
         item = MagicMock(spec=QTreeWidgetItem)
         item.childCount.return_value = 0
@@ -94,7 +94,7 @@ class TestProcessManager:
 
     def test_on_proc_item_expanded_already_has_children(self):
         """Test on_proc_item_expanded skips if already has children."""
-        from system_monitor.core.process_manager import ProcessManager
+        from application.core.process_manager import ProcessManager
         
         item = MagicMock(spec=QTreeWidgetItem)
         item.childCount.return_value = 5
@@ -106,7 +106,7 @@ class TestProcessManager:
 
     def test_on_proc_item_expanded_invalid_pid(self):
         """Test on_proc_item_expanded handles invalid PID."""
-        from system_monitor.core.process_manager import ProcessManager
+        from application.core.process_manager import ProcessManager
         
         item = MagicMock(spec=QTreeWidgetItem)
         item.childCount.return_value = 0
@@ -117,7 +117,7 @@ class TestProcessManager:
 
     def test_on_proc_item_expanded_empty_pid(self):
         """Test on_proc_item_expanded handles empty PID."""
-        from system_monitor.core.process_manager import ProcessManager
+        from application.core.process_manager import ProcessManager
         
         item = MagicMock(spec=QTreeWidgetItem)
         item.childCount.return_value = 0
@@ -126,10 +126,10 @@ class TestProcessManager:
         # Should not raise exception
         ProcessManager.on_proc_item_expanded(self.monitor, item)
 
-    @patch('system_monitor.core.process_manager.psutil')
+    @patch('application.core.process_manager.psutil')
     def test_on_proc_item_expanded_exception(self, mock_psutil):
         """Test on_proc_item_expanded handles exceptions."""
-        from system_monitor.core.process_manager import ProcessManager
+        from application.core.process_manager import ProcessManager
         
         item = MagicMock(spec=QTreeWidgetItem)
         item.childCount.return_value = 0
@@ -139,10 +139,10 @@ class TestProcessManager:
         # Should not raise exception
         ProcessManager.on_proc_item_expanded(self.monitor, item)
 
-    @patch('system_monitor.core.process_manager.psutil')
+    @patch('application.core.process_manager.psutil')
     def test_refresh_processes_priming_pass(self, mock_psutil):
         """Test refresh_processes first pass primes CPU percentages."""
-        from system_monitor.core.process_manager import ProcessManager
+        from application.core.process_manager import ProcessManager
         
         self.monitor._procs_primed = False
         mock_proc = MagicMock()
@@ -153,10 +153,10 @@ class TestProcessManager:
         mock_proc.cpu_percent.assert_called_once_with(None)
         assert self.monitor._procs_primed is True
 
-    @patch('system_monitor.core.process_manager.psutil')
+    @patch('application.core.process_manager.psutil')
     def test_refresh_processes_priming_exception(self, mock_psutil):
         """Test refresh_processes handles exceptions during priming."""
-        from system_monitor.core.process_manager import ProcessManager
+        from application.core.process_manager import ProcessManager
         
         self.monitor._procs_primed = False
         mock_proc = MagicMock()
@@ -167,11 +167,11 @@ class TestProcessManager:
         
         assert self.monitor._procs_primed is True
 
-    @patch('system_monitor.core.process_manager.ProcessManager._update_ui_with_result')
-    @patch('system_monitor.core.process_manager.psutil')
+    @patch('application.core.process_manager.ProcessManager._update_ui_with_result')
+    @patch('application.core.process_manager.psutil')
     def test_refresh_processes_with_result(self, mock_psutil, mock_update_ui):
         """Test refresh_processes updates UI when result available."""
-        from system_monitor.core.process_manager import ProcessManager
+        from application.core.process_manager import ProcessManager
         
         self.monitor._procs_primed = True
         mock_collector = MagicMock()
@@ -186,11 +186,11 @@ class TestProcessManager:
         mock_update_ui.assert_called_once_with(self.monitor, mock_result)
         mock_collector.collect_async.assert_called_once_with(4, "")
 
-    @patch('system_monitor.core.process_manager.ProcessManager.initialize_collector')
-    @patch('system_monitor.core.process_manager.psutil')
+    @patch('application.core.process_manager.ProcessManager.initialize_collector')
+    @patch('application.core.process_manager.psutil')
     def test_refresh_processes_initializes_collector(self, mock_psutil, mock_init):
         """Test refresh_processes initializes collector if needed."""
-        from system_monitor.core.process_manager import ProcessManager
+        from application.core.process_manager import ProcessManager
         
         self.monitor._procs_primed = True
         ProcessManager._collector = None
@@ -199,10 +199,10 @@ class TestProcessManager:
         
         mock_init.assert_called_once()
 
-    @patch('system_monitor.core.process_manager.psutil')
+    @patch('application.core.process_manager.psutil')
     def test_refresh_processes_skips_collect_if_collecting(self, mock_psutil):
         """Test refresh_processes skips new collection if already collecting."""
-        from system_monitor.core.process_manager import ProcessManager
+        from application.core.process_manager import ProcessManager
         
         self.monitor._procs_primed = True
         mock_collector = MagicMock()
@@ -216,21 +216,21 @@ class TestProcessManager:
 
     def test_refresh_processes_exception_handling(self):
         """Test refresh_processes handles exceptions gracefully."""
-        from system_monitor.core.process_manager import ProcessManager
+        from application.core.process_manager import ProcessManager
         
         # Cause exception by not setting _procs_primed and mocking process_iter to raise
-        with patch('system_monitor.core.process_manager.psutil') as mock_psutil:
+        with patch('application.core.process_manager.psutil') as mock_psutil:
             mock_psutil.process_iter.side_effect = Exception("Fatal error")
             
             # Should not raise
             ProcessManager.refresh_processes(self.monitor)
 
-    @patch('system_monitor.core.process_manager.ProcessManager._update_summary_labels')
-    @patch('system_monitor.core.process_manager.ProcessManager._build_process_tree')
-    @patch('system_monitor.core.process_manager.ProcessManager._save_expansion_state')
+    @patch('application.core.process_manager.ProcessManager._update_summary_labels')
+    @patch('application.core.process_manager.ProcessManager._build_process_tree')
+    @patch('application.core.process_manager.ProcessManager._save_expansion_state')
     def test_update_ui_with_result_success(self, mock_save_state, mock_build_tree, mock_update_labels):
         """Test _update_ui_with_result successfully updates UI."""
-        from system_monitor.core.process_manager import ProcessManager
+        from application.core.process_manager import ProcessManager
         
         result = {
             'core_processes': {0: [], 1: []},
@@ -246,12 +246,12 @@ class TestProcessManager:
         mock_build_tree.assert_called_once()
         mock_update_labels.assert_called_once_with(self.monitor, 10, 50)
 
-    @patch('system_monitor.core.process_manager.ProcessManager._update_summary_labels')
-    @patch('system_monitor.core.process_manager.ProcessManager._build_process_tree')
-    @patch('system_monitor.core.process_manager.ProcessManager._save_expansion_state')
+    @patch('application.core.process_manager.ProcessManager._update_summary_labels')
+    @patch('application.core.process_manager.ProcessManager._build_process_tree')
+    @patch('application.core.process_manager.ProcessManager._save_expansion_state')
     def test_update_ui_with_result_first_build(self, mock_save_state, mock_build_tree, mock_update_labels):
         """Test _update_ui_with_result handles first build."""
-        from system_monitor.core.process_manager import ProcessManager
+        from application.core.process_manager import ProcessManager
         
         result = {'core_processes': {0: []}, 'proc_count': 5, 'total_threads': 25}
         mock_save_state.return_value = (set(), {})
@@ -269,7 +269,7 @@ class TestProcessManager:
 
     def test_update_ui_with_result_exception_handling(self):
         """Test _update_ui_with_result handles exceptions."""
-        from system_monitor.core.process_manager import ProcessManager
+        from application.core.process_manager import ProcessManager
         
         result = {'core_processes': {}}
         self.monitor.proc_tree.clear.side_effect = Exception("Clear error")
@@ -279,7 +279,7 @@ class TestProcessManager:
 
     def test_save_expansion_state_no_items(self):
         """Test _save_expansion_state with no items."""
-        from system_monitor.core.process_manager import ProcessManager
+        from application.core.process_manager import ProcessManager
         
         self.monitor.proc_tree.topLevelItemCount.return_value = 0
         
@@ -290,7 +290,7 @@ class TestProcessManager:
 
     def test_save_expansion_state_with_expanded_cores(self):
         """Test _save_expansion_state with expanded core items."""
-        from system_monitor.core.process_manager import ProcessManager
+        from application.core.process_manager import ProcessManager
         
         # Create mock core item
         core_item = MagicMock(spec=QTreeWidgetItem)
@@ -307,7 +307,7 @@ class TestProcessManager:
 
     def test_save_expansion_state_with_expanded_processes(self):
         """Test _save_expansion_state with expanded process items."""
-        from system_monitor.core.process_manager import ProcessManager
+        from application.core.process_manager import ProcessManager
         
         # Create mock process item
         proc_item = MagicMock(spec=QTreeWidgetItem)
@@ -332,7 +332,7 @@ class TestProcessManager:
 
     def test_save_expansion_state_exception_handling(self):
         """Test _save_expansion_state handles exceptions."""
-        from system_monitor.core.process_manager import ProcessManager
+        from application.core.process_manager import ProcessManager
         
         core_item = MagicMock(spec=QTreeWidgetItem)
         core_item.isExpanded.return_value = True
@@ -347,10 +347,10 @@ class TestProcessManager:
         assert isinstance(expanded_cores, set)
         assert isinstance(expanded_processes, dict)
 
-    @patch('system_monitor.core.process_manager.QTreeWidgetItem')
+    @patch('application.core.process_manager.QTreeWidgetItem')
     def test_build_process_tree_basic(self, mock_tree_item_cls):
         """Test _build_process_tree builds tree structure."""
-        from system_monitor.core.process_manager import ProcessManager
+        from application.core.process_manager import ProcessManager
         
         mock_proc_obj = MagicMock()
         core_processes = {
@@ -364,10 +364,10 @@ class TestProcessManager:
         # Should create core item and process item
         assert mock_tree_item_cls.call_count >= 2
 
-    @patch('system_monitor.core.process_manager.QTreeWidgetItem')
+    @patch('application.core.process_manager.QTreeWidgetItem')
     def test_build_process_tree_first_build_expands(self, mock_tree_item_cls):
         """Test _build_process_tree expands on first build."""
-        from system_monitor.core.process_manager import ProcessManager
+        from application.core.process_manager import ProcessManager
         
         mock_core_item = MagicMock()
         mock_tree_item_cls.return_value = mock_core_item
@@ -379,10 +379,10 @@ class TestProcessManager:
         
         mock_core_item.setExpanded.assert_called_with(True)
 
-    @patch('system_monitor.core.process_manager.QTreeWidgetItem')
+    @patch('application.core.process_manager.QTreeWidgetItem')
     def test_build_process_tree_restores_expansion(self, mock_tree_item_cls):
         """Test _build_process_tree restores expansion state."""
-        from system_monitor.core.process_manager import ProcessManager
+        from application.core.process_manager import ProcessManager
         
         mock_items = [MagicMock(), MagicMock()]
         mock_tree_item_cls.side_effect = mock_items
@@ -399,10 +399,10 @@ class TestProcessManager:
         # Core should be expanded
         mock_items[0].setExpanded.assert_called_with(True)
 
-    @patch('system_monitor.core.process_manager.QTreeWidgetItem')
+    @patch('application.core.process_manager.QTreeWidgetItem')
     def test_build_process_tree_lazy_load_threads(self, mock_tree_item_cls):
         """Test _build_process_tree sets lazy load indicator for threads."""
-        from system_monitor.core.process_manager import ProcessManager
+        from application.core.process_manager import ProcessManager
         
         mock_core_item = MagicMock()
         mock_proc_item = MagicMock()
@@ -418,10 +418,10 @@ class TestProcessManager:
         # Should set child indicator for multi-threaded process
         mock_proc_item.setChildIndicatorPolicy.assert_called()
 
-    @patch('system_monitor.core.process_manager.asyncio')
+    @patch('application.core.process_manager.asyncio')
     def test_update_summary_labels_basic(self, mock_asyncio):
         """Test _update_summary_labels updates labels."""
-        from system_monitor.core.process_manager import ProcessManager
+        from application.core.process_manager import ProcessManager
         
         mock_asyncio.get_running_loop.side_effect = Exception("No loop")
         
@@ -430,10 +430,10 @@ class TestProcessManager:
         self.monitor.lbl_proc_summary.setText.assert_called_once_with("Processes: 100   Threads: 500")
         self.monitor.lbl_asyncio.setText.assert_called_once_with("Python coroutines (asyncio tasks): 0")
 
-    @patch('system_monitor.core.process_manager.asyncio')
+    @patch('application.core.process_manager.asyncio')
     def test_update_summary_labels_with_asyncio(self, mock_asyncio):
         """Test _update_summary_labels includes asyncio task count."""
-        from system_monitor.core.process_manager import ProcessManager
+        from application.core.process_manager import ProcessManager
         
         mock_loop = MagicMock()
         mock_asyncio.get_running_loop.return_value = mock_loop

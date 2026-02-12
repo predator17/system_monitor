@@ -12,7 +12,7 @@ Install:
   pip install PySide6 psutil nvidia-ml-py
 
 Run:
-  python -m system_monitor
+  python -m application
 
 Notes:
 - Updates every 100 ms by default (configurable via toolbar).

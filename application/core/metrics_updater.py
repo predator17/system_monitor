@@ -10,10 +10,10 @@ try:
 except ImportError:
     psutil = None
 
-from system_monitor.utils import get_per_core_frequencies, get_gpu_temperatures
+from application.utils import get_per_core_frequencies, get_gpu_temperatures
 
 if TYPE_CHECKING:
-    from system_monitor.app import SystemMonitor
+    from application.app import SystemMonitor
 
 
 class MetricsUpdater:

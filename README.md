@@ -64,9 +64,9 @@ pip install nvidia-ml-py
 Run 运行：
 
 ```bash
-python system_monitor/app.py
+python application/app.py
 # Or use module syntax:
-python -m system_monitor.app
+python -m application.app
 ```
 
 
